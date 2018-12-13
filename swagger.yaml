@@ -1,0 +1,102 @@
+swagger: "2.0"
+info:
+   title: "Livraria Virtual API"
+   description: "PONTIFÍCIA UNIVERSIDADE CATÓLICA DE MINAS GERAIS\n\nCurso/`Oferta:` Engenharia de Software - Oferta 38\n`Disciplina:` Arquitetura de Software Web\n`Professor:` Marco Aurélio S. Mendes\n\nProjete um API para uma livraria virtual que permita que você consulte, avalie e compre livros. A API também deve permitir que você acompanhe a entrega de pedidos."
+   version: "1.0.0"
+   contact:
+      email: "hianneiva@gmail.com"
+host: "apilivraria.swagger.io"
+basePath: "/v1"
+tags:
+ - name: "Livraria"
+   description: "Serviços de Livraria Virtual."
+schemes:
+ - "https"
+ - "http"
+paths:
+   /consulta/{id}:
+     get:
+       summary: "Consulta de livros existentes na livraria."
+       description: ""
+       produces:
+        - "application/json"
+       parameters:
+        - name: "id"
+          in: "path"
+          description: "Valor identificador de um livro"
+          required: true
+          type: "integer"
+          format: "int64"
+       responses:
+          200:
+            description: "Livro retornado com sucesso"
+            schema:
+              $ref: "#/schemas/livro"
+          400:
+            description: "Id de livro informado é inválido"
+          404:
+            description: "Id de livro informado é inexistente"
+   /avaliacao:
+    post:
+      summary: "Avaliação de livros existentes na livraria."
+      description: ""
+      consumes:
+       - "application/json"
+      produces:
+       - "application/json"
+      parameters:
+       - in: "body"
+         name: "body"
+         description: "Objeto da avaliação a ser enviada para a Livraria Virtual"
+         required: true
+         schema:
+             $ref: "#/schemas/avaliacao"
+      responses:
+        201:
+          description: "Avaliação efetuada com sucesso"
+        400:
+          description: "Avaliação contém algum conteúdo inválido"
+   /compra:
+    post:
+       summary: "Compra de livros existentes na livraria."
+       description: ""
+       consumes:
+        - "application/json"
+       produces:
+        - "application/json"
+       parameters:
+        - in: "body"
+          name: "body"
+          description: "Objeto de dados de compra a ser enviada para a Livraria Virtual para efetuação"
+          required: true
+          schema:
+             $ref: "#/schemas/compra"
+       responses:
+         201:
+           description: "Compra efetuada com sucesso"
+         400:
+           description: "A compra não pode ser efetuada por algum prroblema, como falta de estoque"
+         403:
+           description: "A compra não pode ser efetuada por alguma proibição, como cliente inativo"
+   /rastreio/{id}:
+    get:
+       summary: "Consulta de compras efetuadas na livraria."
+       description: ""
+       produces:
+        - "application/json"
+       parameters:
+        - name: "id"
+          in: "path"
+          description: "Valor identificador de uma compra"
+          required: true
+          type: "integer"
+          format: "int64"
+       responses:
+          200:
+             description: "Dados de progresso ou rastreio de compras"
+             schema:
+                $ref: "#/schemas/progresso"
+          400:
+             description: "Id de compra informado é inválido"
+          404:
+             description: "Id de compra informado é inexistente"
